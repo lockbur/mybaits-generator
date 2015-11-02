@@ -1,0 +1,768 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.meizu.mop.cms.mapper.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.meizu.mop.cms.entity.Order" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="order_sn" property="orderSn" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="order_price" property="orderPrice" jdbcType="DECIMAL" />
+    <result column="express" property="express" jdbcType="TINYINT" />
+    <result column="express_price" property="expressPrice" jdbcType="DECIMAL" />
+    <result column="express_id" property="expressId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="refund_status" property="refundStatus" jdbcType="TINYINT" />
+    <result column="pay_type" property="payType" jdbcType="TINYINT" />
+    <result column="order_type" property="orderType" jdbcType="TINYINT" />
+    <result column="receiver_tel" property="receiverTel" jdbcType="VARCHAR" />
+    <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+    <result column="receiver_zipcode" property="receiverZipcode" jdbcType="VARCHAR" />
+    <result column="receiver_province_id" property="receiverProvinceId" jdbcType="INTEGER" />
+    <result column="receiver_city_id" property="receiverCityId" jdbcType="INTEGER" />
+    <result column="receiver_area_id" property="receiverAreaId" jdbcType="INTEGER" />
+    <result column="receiver_address" property="receiverAddress" jdbcType="VARCHAR" />
+    <result column="user_remark" property="userRemark" jdbcType="VARCHAR" />
+    <result column="invoice_type" property="invoiceType" jdbcType="TINYINT" />
+    <result column="invoice_title" property="invoiceTitle" jdbcType="VARCHAR" />
+    <result column="invoice_content" property="invoiceContent" jdbcType="VARCHAR" />
+    <result column="supplier_id" property="supplierId" jdbcType="INTEGER" />
+    <result column="split" property="split" jdbcType="BIT" />
+    <result column="parent_order_id" property="parentOrderId" jdbcType="BIGINT" />
+    <result column="parent_order_sn" property="parentOrderSn" jdbcType="VARCHAR" />
+    <result column="divide_time" property="divideTime" jdbcType="TIMESTAMP" />
+    <result column="warehouse_id" property="warehouseId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="source" property="source" jdbcType="TINYINT" />
+    <result column="ticket" property="ticket" jdbcType="TINYINT" />
+    <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.meizu.mop.cms.entity.Order" extends="BaseResultMap" >
+    <result column="admin_remark" property="adminRemark" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, order_sn, user_id, total_price, order_price, express, express_price, express_id, 
+    status, refund_status, pay_type, order_type, receiver_tel, receiver_name, receiver_zipcode, 
+    receiver_province_id, receiver_city_id, receiver_area_id, receiver_address, user_remark, 
+    invoice_type, invoice_title, invoice_content, supplier_id, split, parent_order_id, 
+    parent_order_sn, divide_time, warehouse_id, create_time, source, ticket, transaction_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    admin_remark
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.meizu.mop.cms.entity.OrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tbl_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.meizu.mop.cms.entity.OrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tbl_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tbl_order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tbl_order
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.meizu.mop.cms.entity.OrderExample" >
+    delete from tbl_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.meizu.mop.cms.entity.Order" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tbl_order (order_sn, user_id, total_price, 
+      order_price, express, express_price, 
+      express_id, status, refund_status, 
+      pay_type, order_type, receiver_tel, 
+      receiver_name, receiver_zipcode, receiver_province_id, 
+      receiver_city_id, receiver_area_id, receiver_address, 
+      user_remark, invoice_type, invoice_title, 
+      invoice_content, supplier_id, split, 
+      parent_order_id, parent_order_sn, divide_time, 
+      warehouse_id, create_time, source, 
+      ticket, transaction_id, admin_remark
+      )
+    values (#{orderSn,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, 
+      #{orderPrice,jdbcType=DECIMAL}, #{express,jdbcType=TINYINT}, #{expressPrice,jdbcType=DECIMAL}, 
+      #{expressId,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{refundStatus,jdbcType=TINYINT}, 
+      #{payType,jdbcType=TINYINT}, #{orderType,jdbcType=TINYINT}, #{receiverTel,jdbcType=VARCHAR}, 
+      #{receiverName,jdbcType=VARCHAR}, #{receiverZipcode,jdbcType=VARCHAR}, #{receiverProvinceId,jdbcType=INTEGER}, 
+      #{receiverCityId,jdbcType=INTEGER}, #{receiverAreaId,jdbcType=INTEGER}, #{receiverAddress,jdbcType=VARCHAR}, 
+      #{userRemark,jdbcType=VARCHAR}, #{invoiceType,jdbcType=TINYINT}, #{invoiceTitle,jdbcType=VARCHAR}, 
+      #{invoiceContent,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{split,jdbcType=BIT}, 
+      #{parentOrderId,jdbcType=BIGINT}, #{parentOrderSn,jdbcType=VARCHAR}, #{divideTime,jdbcType=TIMESTAMP}, 
+      #{warehouseId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{source,jdbcType=TINYINT}, 
+      #{ticket,jdbcType=TINYINT}, #{transactionId,jdbcType=VARCHAR}, #{adminRemark,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.meizu.mop.cms.entity.Order" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tbl_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderSn != null" >
+        order_sn,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="totalPrice != null" >
+        total_price,
+      </if>
+      <if test="orderPrice != null" >
+        order_price,
+      </if>
+      <if test="express != null" >
+        express,
+      </if>
+      <if test="expressPrice != null" >
+        express_price,
+      </if>
+      <if test="expressId != null" >
+        express_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="refundStatus != null" >
+        refund_status,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="orderType != null" >
+        order_type,
+      </if>
+      <if test="receiverTel != null" >
+        receiver_tel,
+      </if>
+      <if test="receiverName != null" >
+        receiver_name,
+      </if>
+      <if test="receiverZipcode != null" >
+        receiver_zipcode,
+      </if>
+      <if test="receiverProvinceId != null" >
+        receiver_province_id,
+      </if>
+      <if test="receiverCityId != null" >
+        receiver_city_id,
+      </if>
+      <if test="receiverAreaId != null" >
+        receiver_area_id,
+      </if>
+      <if test="receiverAddress != null" >
+        receiver_address,
+      </if>
+      <if test="userRemark != null" >
+        user_remark,
+      </if>
+      <if test="invoiceType != null" >
+        invoice_type,
+      </if>
+      <if test="invoiceTitle != null" >
+        invoice_title,
+      </if>
+      <if test="invoiceContent != null" >
+        invoice_content,
+      </if>
+      <if test="supplierId != null" >
+        supplier_id,
+      </if>
+      <if test="split != null" >
+        split,
+      </if>
+      <if test="parentOrderId != null" >
+        parent_order_id,
+      </if>
+      <if test="parentOrderSn != null" >
+        parent_order_sn,
+      </if>
+      <if test="divideTime != null" >
+        divide_time,
+      </if>
+      <if test="warehouseId != null" >
+        warehouse_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="ticket != null" >
+        ticket,
+      </if>
+      <if test="transactionId != null" >
+        transaction_id,
+      </if>
+      <if test="adminRemark != null" >
+        admin_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderSn != null" >
+        #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderPrice != null" >
+        #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="express != null" >
+        #{express,jdbcType=TINYINT},
+      </if>
+      <if test="expressPrice != null" >
+        #{expressPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="expressId != null" >
+        #{expressId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="refundStatus != null" >
+        #{refundStatus,jdbcType=TINYINT},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=TINYINT},
+      </if>
+      <if test="orderType != null" >
+        #{orderType,jdbcType=TINYINT},
+      </if>
+      <if test="receiverTel != null" >
+        #{receiverTel,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverName != null" >
+        #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverZipcode != null" >
+        #{receiverZipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverProvinceId != null" >
+        #{receiverProvinceId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverCityId != null" >
+        #{receiverCityId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverAreaId != null" >
+        #{receiverAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverAddress != null" >
+        #{receiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="userRemark != null" >
+        #{userRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceType != null" >
+        #{invoiceType,jdbcType=TINYINT},
+      </if>
+      <if test="invoiceTitle != null" >
+        #{invoiceTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceContent != null" >
+        #{invoiceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="split != null" >
+        #{split,jdbcType=BIT},
+      </if>
+      <if test="parentOrderId != null" >
+        #{parentOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="parentOrderSn != null" >
+        #{parentOrderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="divideTime != null" >
+        #{divideTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="warehouseId != null" >
+        #{warehouseId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=TINYINT},
+      </if>
+      <if test="ticket != null" >
+        #{ticket,jdbcType=TINYINT},
+      </if>
+      <if test="transactionId != null" >
+        #{transactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="adminRemark != null" >
+        #{adminRemark,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.meizu.mop.cms.entity.OrderExample" resultType="java.lang.Integer" >
+    select count(*) from tbl_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tbl_order
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderSn != null" >
+        order_sn = #{record.orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalPrice != null" >
+        total_price = #{record.totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.orderPrice != null" >
+        order_price = #{record.orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.express != null" >
+        express = #{record.express,jdbcType=TINYINT},
+      </if>
+      <if test="record.expressPrice != null" >
+        express_price = #{record.expressPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.expressId != null" >
+        express_id = #{record.expressId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.refundStatus != null" >
+        refund_status = #{record.refundStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.payType != null" >
+        pay_type = #{record.payType,jdbcType=TINYINT},
+      </if>
+      <if test="record.orderType != null" >
+        order_type = #{record.orderType,jdbcType=TINYINT},
+      </if>
+      <if test="record.receiverTel != null" >
+        receiver_tel = #{record.receiverTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiverName != null" >
+        receiver_name = #{record.receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiverZipcode != null" >
+        receiver_zipcode = #{record.receiverZipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiverProvinceId != null" >
+        receiver_province_id = #{record.receiverProvinceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.receiverCityId != null" >
+        receiver_city_id = #{record.receiverCityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.receiverAreaId != null" >
+        receiver_area_id = #{record.receiverAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.receiverAddress != null" >
+        receiver_address = #{record.receiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userRemark != null" >
+        user_remark = #{record.userRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invoiceType != null" >
+        invoice_type = #{record.invoiceType,jdbcType=TINYINT},
+      </if>
+      <if test="record.invoiceTitle != null" >
+        invoice_title = #{record.invoiceTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invoiceContent != null" >
+        invoice_content = #{record.invoiceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplierId != null" >
+        supplier_id = #{record.supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="record.split != null" >
+        split = #{record.split,jdbcType=BIT},
+      </if>
+      <if test="record.parentOrderId != null" >
+        parent_order_id = #{record.parentOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.parentOrderSn != null" >
+        parent_order_sn = #{record.parentOrderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.divideTime != null" >
+        divide_time = #{record.divideTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.warehouseId != null" >
+        warehouse_id = #{record.warehouseId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.source != null" >
+        source = #{record.source,jdbcType=TINYINT},
+      </if>
+      <if test="record.ticket != null" >
+        ticket = #{record.ticket,jdbcType=TINYINT},
+      </if>
+      <if test="record.transactionId != null" >
+        transaction_id = #{record.transactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adminRemark != null" >
+        admin_remark = #{record.adminRemark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update tbl_order
+    set id = #{record.id,jdbcType=BIGINT},
+      order_sn = #{record.orderSn,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      total_price = #{record.totalPrice,jdbcType=DECIMAL},
+      order_price = #{record.orderPrice,jdbcType=DECIMAL},
+      express = #{record.express,jdbcType=TINYINT},
+      express_price = #{record.expressPrice,jdbcType=DECIMAL},
+      express_id = #{record.expressId,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      refund_status = #{record.refundStatus,jdbcType=TINYINT},
+      pay_type = #{record.payType,jdbcType=TINYINT},
+      order_type = #{record.orderType,jdbcType=TINYINT},
+      receiver_tel = #{record.receiverTel,jdbcType=VARCHAR},
+      receiver_name = #{record.receiverName,jdbcType=VARCHAR},
+      receiver_zipcode = #{record.receiverZipcode,jdbcType=VARCHAR},
+      receiver_province_id = #{record.receiverProvinceId,jdbcType=INTEGER},
+      receiver_city_id = #{record.receiverCityId,jdbcType=INTEGER},
+      receiver_area_id = #{record.receiverAreaId,jdbcType=INTEGER},
+      receiver_address = #{record.receiverAddress,jdbcType=VARCHAR},
+      user_remark = #{record.userRemark,jdbcType=VARCHAR},
+      invoice_type = #{record.invoiceType,jdbcType=TINYINT},
+      invoice_title = #{record.invoiceTitle,jdbcType=VARCHAR},
+      invoice_content = #{record.invoiceContent,jdbcType=VARCHAR},
+      supplier_id = #{record.supplierId,jdbcType=INTEGER},
+      split = #{record.split,jdbcType=BIT},
+      parent_order_id = #{record.parentOrderId,jdbcType=BIGINT},
+      parent_order_sn = #{record.parentOrderSn,jdbcType=VARCHAR},
+      divide_time = #{record.divideTime,jdbcType=TIMESTAMP},
+      warehouse_id = #{record.warehouseId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      source = #{record.source,jdbcType=TINYINT},
+      ticket = #{record.ticket,jdbcType=TINYINT},
+      transaction_id = #{record.transactionId,jdbcType=VARCHAR},
+      admin_remark = #{record.adminRemark,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tbl_order
+    set id = #{record.id,jdbcType=BIGINT},
+      order_sn = #{record.orderSn,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      total_price = #{record.totalPrice,jdbcType=DECIMAL},
+      order_price = #{record.orderPrice,jdbcType=DECIMAL},
+      express = #{record.express,jdbcType=TINYINT},
+      express_price = #{record.expressPrice,jdbcType=DECIMAL},
+      express_id = #{record.expressId,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      refund_status = #{record.refundStatus,jdbcType=TINYINT},
+      pay_type = #{record.payType,jdbcType=TINYINT},
+      order_type = #{record.orderType,jdbcType=TINYINT},
+      receiver_tel = #{record.receiverTel,jdbcType=VARCHAR},
+      receiver_name = #{record.receiverName,jdbcType=VARCHAR},
+      receiver_zipcode = #{record.receiverZipcode,jdbcType=VARCHAR},
+      receiver_province_id = #{record.receiverProvinceId,jdbcType=INTEGER},
+      receiver_city_id = #{record.receiverCityId,jdbcType=INTEGER},
+      receiver_area_id = #{record.receiverAreaId,jdbcType=INTEGER},
+      receiver_address = #{record.receiverAddress,jdbcType=VARCHAR},
+      user_remark = #{record.userRemark,jdbcType=VARCHAR},
+      invoice_type = #{record.invoiceType,jdbcType=TINYINT},
+      invoice_title = #{record.invoiceTitle,jdbcType=VARCHAR},
+      invoice_content = #{record.invoiceContent,jdbcType=VARCHAR},
+      supplier_id = #{record.supplierId,jdbcType=INTEGER},
+      split = #{record.split,jdbcType=BIT},
+      parent_order_id = #{record.parentOrderId,jdbcType=BIGINT},
+      parent_order_sn = #{record.parentOrderSn,jdbcType=VARCHAR},
+      divide_time = #{record.divideTime,jdbcType=TIMESTAMP},
+      warehouse_id = #{record.warehouseId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      source = #{record.source,jdbcType=TINYINT},
+      ticket = #{record.ticket,jdbcType=TINYINT},
+      transaction_id = #{record.transactionId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meizu.mop.cms.entity.Order" >
+    update tbl_order
+    <set >
+      <if test="orderSn != null" >
+        order_sn = #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null" >
+        total_price = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderPrice != null" >
+        order_price = #{orderPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="express != null" >
+        express = #{express,jdbcType=TINYINT},
+      </if>
+      <if test="expressPrice != null" >
+        express_price = #{expressPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="expressId != null" >
+        express_id = #{expressId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="refundStatus != null" >
+        refund_status = #{refundStatus,jdbcType=TINYINT},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=TINYINT},
+      </if>
+      <if test="orderType != null" >
+        order_type = #{orderType,jdbcType=TINYINT},
+      </if>
+      <if test="receiverTel != null" >
+        receiver_tel = #{receiverTel,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverName != null" >
+        receiver_name = #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverZipcode != null" >
+        receiver_zipcode = #{receiverZipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverProvinceId != null" >
+        receiver_province_id = #{receiverProvinceId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverCityId != null" >
+        receiver_city_id = #{receiverCityId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverAreaId != null" >
+        receiver_area_id = #{receiverAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverAddress != null" >
+        receiver_address = #{receiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="userRemark != null" >
+        user_remark = #{userRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceType != null" >
+        invoice_type = #{invoiceType,jdbcType=TINYINT},
+      </if>
+      <if test="invoiceTitle != null" >
+        invoice_title = #{invoiceTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceContent != null" >
+        invoice_content = #{invoiceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null" >
+        supplier_id = #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="split != null" >
+        split = #{split,jdbcType=BIT},
+      </if>
+      <if test="parentOrderId != null" >
+        parent_order_id = #{parentOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="parentOrderSn != null" >
+        parent_order_sn = #{parentOrderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="divideTime != null" >
+        divide_time = #{divideTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="warehouseId != null" >
+        warehouse_id = #{warehouseId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=TINYINT},
+      </if>
+      <if test="ticket != null" >
+        ticket = #{ticket,jdbcType=TINYINT},
+      </if>
+      <if test="transactionId != null" >
+        transaction_id = #{transactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="adminRemark != null" >
+        admin_remark = #{adminRemark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.meizu.mop.cms.entity.Order" >
+    update tbl_order
+    set order_sn = #{orderSn,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      total_price = #{totalPrice,jdbcType=DECIMAL},
+      order_price = #{orderPrice,jdbcType=DECIMAL},
+      express = #{express,jdbcType=TINYINT},
+      express_price = #{expressPrice,jdbcType=DECIMAL},
+      express_id = #{expressId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      refund_status = #{refundStatus,jdbcType=TINYINT},
+      pay_type = #{payType,jdbcType=TINYINT},
+      order_type = #{orderType,jdbcType=TINYINT},
+      receiver_tel = #{receiverTel,jdbcType=VARCHAR},
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
+      receiver_zipcode = #{receiverZipcode,jdbcType=VARCHAR},
+      receiver_province_id = #{receiverProvinceId,jdbcType=INTEGER},
+      receiver_city_id = #{receiverCityId,jdbcType=INTEGER},
+      receiver_area_id = #{receiverAreaId,jdbcType=INTEGER},
+      receiver_address = #{receiverAddress,jdbcType=VARCHAR},
+      user_remark = #{userRemark,jdbcType=VARCHAR},
+      invoice_type = #{invoiceType,jdbcType=TINYINT},
+      invoice_title = #{invoiceTitle,jdbcType=VARCHAR},
+      invoice_content = #{invoiceContent,jdbcType=VARCHAR},
+      supplier_id = #{supplierId,jdbcType=INTEGER},
+      split = #{split,jdbcType=BIT},
+      parent_order_id = #{parentOrderId,jdbcType=BIGINT},
+      parent_order_sn = #{parentOrderSn,jdbcType=VARCHAR},
+      divide_time = #{divideTime,jdbcType=TIMESTAMP},
+      warehouse_id = #{warehouseId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      source = #{source,jdbcType=TINYINT},
+      ticket = #{ticket,jdbcType=TINYINT},
+      transaction_id = #{transactionId,jdbcType=VARCHAR},
+      admin_remark = #{adminRemark,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.meizu.mop.cms.entity.Order" >
+    update tbl_order
+    set order_sn = #{orderSn,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      total_price = #{totalPrice,jdbcType=DECIMAL},
+      order_price = #{orderPrice,jdbcType=DECIMAL},
+      express = #{express,jdbcType=TINYINT},
+      express_price = #{expressPrice,jdbcType=DECIMAL},
+      express_id = #{expressId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      refund_status = #{refundStatus,jdbcType=TINYINT},
+      pay_type = #{payType,jdbcType=TINYINT},
+      order_type = #{orderType,jdbcType=TINYINT},
+      receiver_tel = #{receiverTel,jdbcType=VARCHAR},
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
+      receiver_zipcode = #{receiverZipcode,jdbcType=VARCHAR},
+      receiver_province_id = #{receiverProvinceId,jdbcType=INTEGER},
+      receiver_city_id = #{receiverCityId,jdbcType=INTEGER},
+      receiver_area_id = #{receiverAreaId,jdbcType=INTEGER},
+      receiver_address = #{receiverAddress,jdbcType=VARCHAR},
+      user_remark = #{userRemark,jdbcType=VARCHAR},
+      invoice_type = #{invoiceType,jdbcType=TINYINT},
+      invoice_title = #{invoiceTitle,jdbcType=VARCHAR},
+      invoice_content = #{invoiceContent,jdbcType=VARCHAR},
+      supplier_id = #{supplierId,jdbcType=INTEGER},
+      split = #{split,jdbcType=BIT},
+      parent_order_id = #{parentOrderId,jdbcType=BIGINT},
+      parent_order_sn = #{parentOrderSn,jdbcType=VARCHAR},
+      divide_time = #{divideTime,jdbcType=TIMESTAMP},
+      warehouse_id = #{warehouseId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      source = #{source,jdbcType=TINYINT},
+      ticket = #{ticket,jdbcType=TINYINT},
+      transaction_id = #{transactionId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
